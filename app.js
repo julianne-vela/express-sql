@@ -1,9 +1,27 @@
-const express = require('express')
-const app = express()
-const port = process.env.PORT || 3000
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const app = express();
+const {
+    shuttles
+} = require('./shuttles.js');
 
-app.get('/', (req, res) => {
-    res.json('hello world')
+app.use(cors());
+
+app.get('/shuttles', (req, res) => {
+    res.json({
+        results: shuttles
+    })
+})
+
+app.get('/shuttles/:crew', (req, res) => {
+    const crew = req.params.crew
+
+    const shuttlesObj = shuttles.find((obj) => obj.crew === crew)
+
+    res.json({
+        results: shuttlesObj
+    })
 })
 
 module.exports = {
